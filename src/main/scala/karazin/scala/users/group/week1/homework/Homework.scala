@@ -40,21 +40,44 @@ object Homework :
 
   object `Boolean Operators` :
 
-    def not(b: Boolean): Boolean = if (b) false else true;
+    def not(b: Boolean): Boolean = if (b) false else true
 
-    def and(left: Boolean, right: Boolean): Boolean = if left then right else false;
+    def and(left: Boolean, right: Boolean): Boolean = if left then right else false
 
-    def or(left: Boolean, right: Boolean): Boolean = if left then true else right;
+    def or(left: Boolean, right: Boolean): Boolean = if left then true else right
 
   end `Boolean Operators`
 
+
   object `Fermat Numbers` :
 
-    val multiplication: (BigInt, BigInt) => BigInt = ???
+    val multiplication: (BigInt, BigInt) => BigInt = (first, second) => {
 
-    val power: (BigInt, BigInt) => BigInt = ???
+      @tailrec
+      def mult(first: BigInt, second: BigInt, res: BigInt): BigInt = {
+        if second == 0
+          then res
+        else
+          mult(first, second - 1, res + first)
+      }
 
-    val fermatNumber: Int => BigInt = ???
+      mult(first, second, 0)
+    }
+
+    val power: (BigInt, BigInt) => BigInt = (num, power) => {
+
+      @tailrec
+      def pow(num: BigInt, power: BigInt, res: BigInt): BigInt = {
+        if power == 0
+          then res
+        else
+          pow(num, power - 1, multiplication(num, power))
+      }
+
+      pow(num, power, 1)
+    }
+
+    val fermatNumber: Int => BigInt = n => power(2, power(2, n)) + 1
 
   end `Fermat Numbers`
 
