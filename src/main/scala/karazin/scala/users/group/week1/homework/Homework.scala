@@ -81,8 +81,38 @@ object Homework :
 
   end `Fermat Numbers`
 
+
+
   object `Look-and-say Sequence` :
-    val lookAndSaySequenceElement: Int => BigInt = ???
+    val lookAndSaySequenceElement: Int => BigInt = n => {
+      val nums = n.toString().map(_.asDigit).toList
+      val unique = nums.distinct
+
+      @tailrec
+      def findNum(nums: List[Int], unique: List[Int], iterator: Int, res: String): String = {
+          if iterator == unique.length
+            then res
+          else{
+            val quantity = countItems(nums, 0, unique(iterator), 0)
+            val newRes = res.concat(unique(iterator).toString()).concat(quantity.toString())
+            findNum(nums, unique, iterator + 1, newRes)
+          }
+      }
+
+      @tailrec
+      def countItems(nums: List[Int], i:Int, item: Int, quantity: Int): Int = {
+        if i == nums.length
+          then quantity
+        else
+          if nums(i) == item
+            then countItems(nums, i + 1, item, quantity + 1)
+          else
+            countItems(nums, i + 1, item, quantity)
+
+      }
+
+      findNum(nums, unique, 0, "").toInt
+    }
 
   end `Look-and-say Sequence`
 
