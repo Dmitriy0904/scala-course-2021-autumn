@@ -40,11 +40,11 @@ object Homework :
 
   object `Boolean Operators` :
 
-    def not(b: Boolean): Boolean = if (b) false else true
+    def not(b: Boolean): Boolean = if b then false else true
 
-    def and(left: Boolean, right: Boolean): Boolean = if left then right else false
+    def and(left: Boolean, right: => Boolean): Boolean = if left then right else false
 
-    def or(left: Boolean, right: Boolean): Boolean = if left then true else right
+    def or(left: Boolean, right: => Boolean): Boolean = if left then true else right
 
   end `Boolean Operators`
 

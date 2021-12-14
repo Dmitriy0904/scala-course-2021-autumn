@@ -23,14 +23,22 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
   property("and") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
     
-    and(left, right) == left && right
+    and(left, right) == (left && right)
+  }
+
+  property("and operator with operand with exception") = forAll { () =>
+    !and(false, throw new Exception())
   }
 
   property("or") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
     
-    or(left, right) == left || right
-  }   
+    or(left, right) == (left || right)
+  }
+
+  property("or operator with operand with exception") = forAll { () =>
+    or(true, throw new Exception())
+  }
 
 end BooleanOperatorsSpecification
 
