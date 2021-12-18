@@ -85,34 +85,46 @@ object Homework :
 
   object `Look-and-say Sequence` :
     val lookAndSaySequenceElement: Int => BigInt = n => {
-      val nums = n.toString().map(_.asDigit).toList
-      val unique = nums.distinct
 
+      //Find new look-and-say sequence number from given
       @tailrec
-      def findNum(nums: List[Int], unique: List[Int], iterator: Int, res: String): String = {
-          if iterator == unique.length
-            then res
+      def findNum(nums: List[Int], i: Int, res: String): BigInt = {
+          if i == nums.length
+            then BigInt(res)
           else{
-            val quantity = countItems(nums, 0, unique(iterator), 0)
-            val newRes = res.concat(unique(iterator).toString()).concat(quantity.toString())
-            findNum(nums, unique, iterator + 1, newRes)
+            val quantity = countItems(nums, i, nums(i), 0)
+            val newI = i + quantity
+            val newRes = res.concat(quantity.toString()).concat(nums(i).toString)
+            findNum(nums, newI, newRes)
           }
       }
 
+      //Count items in array of numbers
       @tailrec
-      def countItems(nums: List[Int], i:Int, item: Int, quantity: Int): Int = {
-        if i == nums.length
+      def countItems(nums: List[Int], i: Int, item: Int, quantity: Int): Int = {
+        if i == nums.length ||  nums(i) != item
           then quantity
         else
-          if nums(i) == item
-            then countItems(nums, i + 1, item, quantity + 1)
-          else
-            countItems(nums, i + 1, item, quantity)
-
+          countItems(nums, i + 1, item, quantity + 1)
       }
 
-      findNum(nums, unique, 0, "").toInt
-    }
+      //Find given n-th element of look-and-say sequence
+      @tailrec
+      def findNthElement(n: Int, counter: Int, res: BigInt): BigInt = {
+          if counter == n
+            then res
+          else {
+            val nums = res.toString().map(_.asDigit).toList
+            val newElement = findNum(nums, 0, "")
+            findNthElement(n, counter + 1, newElement)
+          }
+      }
+
+      if n < 0
+        then throw new IllegalArgumentException("Illegal argument with negative value: " + n)
+      else
+        findNthElement(n, 0, 1)
+}
 
   end `Look-and-say Sequence`
 
