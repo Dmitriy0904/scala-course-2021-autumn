@@ -93,6 +93,10 @@ object Homework:
 
     def isInstance(other: Any): Boolean = other.isInstanceOf[Rational]
 
+    def toDecimalFormat(): Double = {
+      numer.toDouble / denom.toDouble
+    }
+
   end Rational
 
 end Homework
