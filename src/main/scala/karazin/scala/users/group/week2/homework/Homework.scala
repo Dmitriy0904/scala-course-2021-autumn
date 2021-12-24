@@ -1,6 +1,7 @@
 package karazin.scala.users.group.week2.homework
 
 import scala.annotation.targetName
+import scala.language.postfixOps
 import scala.math.{abs, signum}
 
 object Homework:
@@ -34,19 +35,44 @@ object Homework:
       !(this < that)
 
     @targetName("addition")
-    infix def +(that: Rational): Rational = ???
+    infix def +(that: Rational): Rational = {
+      new Rational(
+        this.numer * that.denom + that.numer * this.denom,    //Common denominator
+        this.denom * that.denom
+      )
+    }
 
     @targetName("negation")
-    infix def unary_- : Rational = ???
+    infix def unary_- : Rational = {
+      new Rational(this.numer * (-1), this.denom)
+    }
 
     @targetName("substraction")
-    infix def -(that: Rational): Rational = ???
+    infix def -(that: Rational): Rational = {
+      new Rational(
+        this.numer * that.denom - that.numer * this.denom,
+        this.denom * that.denom
+      )
+    }
 
     @targetName("multiplication")
-    infix def *(that: Rational): Rational = ???
+    infix def *(that: Rational): Rational = {
+      new Rational(
+        this.numer * that.numer,
+        this.denom * that.denom
+      )
+    }
 
-    @targetName("devision")
-    infix def /(that: Rational): Rational = ???
+    @targetName("division")
+    infix def /(that: Rational): Rational = {
+      if that.numer == 0
+        then throw IllegalArgumentException("Dividing by zero")
+      else
+          new Rational(
+            this.numer * that.denom,
+            this.denom * that.numer
+          )
+    }
 
     override def toString: String = s"${this.numer}/${this.denom}"
 
@@ -55,7 +81,23 @@ object Homework:
 
     private lazy val g = gcd(abs(x), y)
 
-    override def equals(other: Any): Boolean = ???
+
+    override def equals(other: Any): Boolean = other match {
+      case that: Rational =>
+        (that isInstance this) &&
+          numer == that.numer &&
+          denom == that.denom &&
+          g == that.g
+      case _ => false
+    }
+
+    def isInstance(other: Any): Boolean = other.isInstanceOf[Rational]
+
+    override def hashCode(): Int = {
+      val prime = 31
+      var result = 1
+      prime * result + numer.hashCode() + denom.hashCode();
+    }
 
   end Rational
 
