@@ -93,8 +93,10 @@ object Homework:
 
     def isInstance(other: Any): Boolean = other.isInstanceOf[Rational]
 
-    def toDecimalFormat(): Double = {
-      numer.toDouble / denom.toDouble
+    override def hashCode(): Int = {
+      val prime = 31
+      var result = 1
+      prime * result + numer.hashCode() + denom.hashCode();
     }
 
   end Rational
