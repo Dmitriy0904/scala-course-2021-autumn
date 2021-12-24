@@ -27,7 +27,7 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
   }
 
   property("and operator with operand with exception") = forAll { () =>
-    !and(false, throw new Exception())
+    and(false, throw new Exception()) == false
   }
 
   property("or") = forAll { (pair: (Boolean, Boolean)) =>
@@ -37,7 +37,7 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
   }
 
   property("or operator with operand with exception") = forAll { () =>
-    or(true, throw new Exception())
+    or(true, throw new Exception()) == true
   }
 
 end BooleanOperatorsSpecification
