@@ -26,7 +26,7 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
     and(left, right) == (left && right)
   }
 
-  property("and operator with operand with exception") = forAll { () =>
+  property("and operator with operand with exception") = propBoolean {
     and(false, throw new Exception()) == false
   }
 
@@ -36,7 +36,7 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
     or(left, right) == (left || right)
   }
 
-  property("or operator with operand with exception") = forAll { () =>
+  property("or operator with operand with exception") = propBoolean {
     or(true, throw new Exception()) == true
   }
 
