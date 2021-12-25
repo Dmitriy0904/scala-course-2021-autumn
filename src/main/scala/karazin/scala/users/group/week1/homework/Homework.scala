@@ -40,26 +40,91 @@ object Homework :
 
   object `Boolean Operators` :
 
-    def not(b: Boolean): Boolean = ???
+    def not(b: Boolean): Boolean = if b then false else true
 
-    def and(left: Boolean, right: Boolean): Boolean = ???
+    def and(left: Boolean, right: => Boolean): Boolean = if left then right else false
 
-    def or(left: Boolean, right: Boolean): Boolean = ???
+    def or(left: Boolean, right: => Boolean): Boolean = if left then true else right
 
   end `Boolean Operators`
 
+
   object `Fermat Numbers` :
 
-    val multiplication: (BigInt, BigInt) => BigInt = ???
+    val multiplication: (BigInt, BigInt) => BigInt = (first, second) => {
 
-    val power: (BigInt, BigInt) => BigInt = ???
+      @tailrec
+      def mult(first: BigInt, second: BigInt, res: BigInt): BigInt = {
+        if second == 0
+          then res
+        else
+          mult(first, second - 1, res + first)
+      }
 
-    val fermatNumber: Int => BigInt = ???
+      mult(first, second, 0)
+    }
+
+    val power: (BigInt, BigInt) => BigInt = (num, power) => {
+
+      @tailrec
+      def pow(num: BigInt, power: BigInt, res: BigInt): BigInt = {
+        if power == 0
+          then res
+        else
+          pow(num, power - 1, multiplication(num, power))
+      }
+
+      pow(num, power, 1)
+    }
+
+    val fermatNumber: Int => BigInt = n => power(2, power(2, n)) + 1
 
   end `Fermat Numbers`
 
+
+
   object `Look-and-say Sequence` :
-    val lookAndSaySequenceElement: Int => BigInt = ???
+    val lookAndSaySequenceElement: Int => BigInt = n => {
+
+      //Find new look-and-say sequence number from given
+      @tailrec
+      def findNum(nums: List[Int], i: Int, res: String): BigInt = {
+          if i == nums.length
+            then BigInt(res)
+          else{
+            val quantity = countItems(nums, i, nums(i), 0)
+            val newI = i + quantity
+            val newRes = res.concat(quantity.toString()).concat(nums(i).toString)
+            findNum(nums, newI, newRes)
+          }
+      }
+
+      //Count items in array of numbers
+      @tailrec
+      def countItems(nums: List[Int], i: Int, item: Int, quantity: Int): Int = {
+        if i == nums.length ||  nums(i) != item
+          then quantity
+        else
+          countItems(nums, i + 1, item, quantity + 1)
+      }
+
+      //Find given n-th element of look-and-say sequence
+      @tailrec
+      def findNthElement(n: Int, counter: Int, res: BigInt): BigInt = {
+          if counter == n
+            then res
+          else {
+            val nums = res.toString().map(_.asDigit).toList
+            val newElement = findNum(nums, 0, "")
+            findNthElement(n, counter + 1, newElement)
+          }
+      }
+
+      if n < 0
+        then throw new IllegalArgumentException("Illegal argument with negative value: " + n)
+      else
+        findNthElement(n, 0, 1)
+}
 
   end `Look-and-say Sequence`
 

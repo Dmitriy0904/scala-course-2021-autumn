@@ -23,14 +23,22 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
   property("and") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
     
-    and(left, right) == left && right
+    and(left, right) == (left && right)
+  }
+
+  property("and operator with operand with exception") = propBoolean {
+    and(false, throw new Exception()) == false
   }
 
   property("or") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
     
-    or(left, right) == left || right
-  }   
+    or(left, right) == (left || right)
+  }
+
+  property("or operator with operand with exception") = propBoolean {
+    or(true, throw new Exception()) == true
+  }
 
 end BooleanOperatorsSpecification
 
@@ -56,8 +64,16 @@ object LookAndAaSequenceSpecification extends Properties("Look-and-say Sequence"
   import `Look-and-say Sequence`._
   import arbitraries.given Arbitrary[Int]
 
-  property("fermatNumber") = forAll { (n: Int) =>
-    lookAndSaySequenceElement(n) == 42
-  }  
+  property("`Look-and-say Sequence") = forAll { (n: Int) =>
+    val sequenceElements: List[BigInt] = List(
+      1, 11, 21, 1211, 111221,
+      312211, 13112221, 1113213211,
+      BigInt("31131211131221"),
+      BigInt("13211311123113112211"),
+      BigInt("11131221133112132113212221")
+    )
+
+    lookAndSaySequenceElement(n) == sequenceElements(n)
+}
 
 end LookAndAaSequenceSpecification
